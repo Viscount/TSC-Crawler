@@ -4,10 +4,13 @@
 import urllib2
 import json
 from tenacity import retry, stop_after_attempt, wait_fixed
+import logging
+
+logger = logging.getLogger("logger")
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(1))
 def request_api(url):
+    logger.info("Requesting url: " + url)
     response = urllib2.urlopen(url)
-    data = json.loads(response.read())
-    return data
+    return response.read()
