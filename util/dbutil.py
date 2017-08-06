@@ -41,7 +41,7 @@ class DBUtil(object):
         if DBUtil.__ENGINE is None:
             # engine 作为编程语言与数据库的接口，conn_str 中需要一致 数据库与 编程语言的字符编码，这样才不会出现乱码。这里双方都是
             # utf8mb4
-            DBUtil.__ENGINE = create_engine(conn_str, echo=True)
+            DBUtil.__ENGINE = create_engine(conn_str, echo=False)
         return DBUtil.__ENGINE  # engine对象和session对象都可作用于数据库的增删改查操作。
 
     # 创建一个配置好的Session类，产生session对象，用于数据库的增删改查。

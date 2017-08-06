@@ -3,6 +3,7 @@
 
 import logging
 import datetime
+import time
 import json
 from request import webpage, api
 from models.bangumi import Bangumi
@@ -24,7 +25,8 @@ def _format_callback(callback_result):
     return callback_result[19:-2]
 
 
-def get_style_tags(web_page_content):
+def get_style_tags(url):
+    web_page_content = BeautifulSoup(webpage.request_webpage(url), "html.parser")
     tag_list = web_page_content.find_all(class_="info-style-item")
     return [unicode(tag.string) for tag in tag_list]
 
@@ -32,8 +34,7 @@ def get_style_tags(web_page_content):
 def bangumi_handler(data_dict):
     bangumi = Bangumi(data_dict)
     logger.info("Now collecting bangumi info :" + bangumi.season_id + "-" + bangumi.title + "...")
-    web_page_content = BeautifulSoup(webpage.request_webpage(bangumi.url), "html.parser")
-    bangumi.tags = "|".join(get_style_tags(web_page_content))
+    bangumi.tags = "|".join(get_style_tags(bangumi.url))
     bangumi.createdAt = datetime.datetime.now()
     bangumi.updatedAt = datetime.datetime.now()
     bangumi_dao.add_bangumi(bangumi)
@@ -41,7 +42,8 @@ def bangumi_handler(data_dict):
     bangumi_info = json.loads(_format_callback(api.request_api(_construct_bangumi_detail_url(bangumi.season_id))))
     episodes_list = bangumi_info["result"]["episodes"]
     for episode_item in episodes_list:
-        episode.episode_handler(episode_item)
+        episode.episode_handler(bangumi, episode_item)
+        time.sleep(1)
     return
 
 

@@ -10,15 +10,14 @@ __BASE_MODEL = BaseModel.get_base_model()
 
 class Bangumi(__BASE_MODEL):
     __tablename__ = 'bangumi'
-    id = Column(Integer, primary_key=True)
     cover = Column(Text, nullable=True)
     favorites = Column(Integer, nullable=True)
     is_finish = Column(Integer, nullable=True)
-    newest_ep_index = Column(Text, nullable=True)
+    newest_ep_index = Column(Integer, nullable=True)
     pub_time = Column(Integer, nullable=True)
-    season_id = Column(String(30), nullable=False)
+    season_id = Column(Integer, primary_key=True)
     season_status = Column(Integer, nullable=True)
-    title = Column(Text, nullable=True)
+    title = Column(String(64), nullable=True)
     total_count = Column(Integer, nullable=True)
     update_time = Column(Integer, nullable=True)
     url = Column(Text, nullable=True)

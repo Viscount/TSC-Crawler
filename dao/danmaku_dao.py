@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from util.dbutil import DBUtil
-from models.bangumi import Bangumi
+from models.danmaku import Danmaku
 
 
-def add_bangumi(bangumi):
+def add_danmaku(danmaku):
     session = DBUtil.open_session()
     try:
-        session.merge(bangumi)
+        session.merge(danmaku)
         session.commit()
         return True
     except Exception as e:
@@ -19,11 +19,11 @@ def add_bangumi(bangumi):
         DBUtil.close_session(session)
 
 
-def add_bangumis(bangumi_list):
+def add_danmakus(danmaku_list):
     session = DBUtil.open_session()
     try:
-        for bangumi in bangumi_list:
-            session.merge(bangumi)
+        for danmaku in danmaku_list:
+            session.merge(danmaku)
         session.commit()
         return True
     except Exception as e:

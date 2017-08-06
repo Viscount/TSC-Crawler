@@ -7,6 +7,8 @@ import datetime
 from request import webpage, api
 from models.episode import Episode
 from tasks import danmaku
+from dao import episode_dao
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger("logger")
 
@@ -22,11 +24,22 @@ def get_comment_id(episode_id):
     return result["result"]["currentEpisode"]["danmaku"]
 
 
-def episode_handler(data_dict):
+def get_tag_list(av_id):
+    URL_HEADER = "http://api.bilibili.com/x/tag/archive/tags?aid="
+    result = json.loads(api.request_api(URL_HEADER + str(av_id)))
+    tag_list = result["data"]
+    return [tag["tag_name"] for tag in tag_list]
+
+
+def episode_handler(bangumi, data_dict):
     episode = Episode(data_dict)
+    logger.info("Now collecting episode info :" + episode.episode_id + "-" + episode.index_title + "...")
     episode.cid = get_comment_id(episode.episode_id)
+    episode.tags = "|".join(get_tag_list(episode.av_id))
+    episode.bangumi = bangumi
     episode.createdAt = datetime.datetime.now()
     episode.updatedAt = datetime.datetime.now()
+    episode_dao.add_episode(episode)
 
-    danmaku.danmaku_handler(episode.cid)
+    danmaku.danmaku_handler(episode)
     return
