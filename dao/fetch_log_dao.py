@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from util.dbutil import DBUtil
-from models.danmaku import Danmaku
 
 
-def add_danmaku(danmaku):
+def add_fetch_log(fetch_log):
     session = DBUtil.open_session()
     try:
-        session.merge(danmaku)
+        session.merge(fetch_log)
         session.commit()
         return True
     except Exception as e:
@@ -19,26 +18,13 @@ def add_danmaku(danmaku):
         DBUtil.close_session(session)
 
 
-def add_danmakus(danmaku_list):
+def add_fetch_logs(fetch_log_list):
     session = DBUtil.open_session()
     try:
-        for danmaku in danmaku_list:
-            session.merge(danmaku)
+        for fetch_log in fetch_log_list:
+            session.merge(fetch_log)
         session.commit()
         return True
-    except Exception as e:
-        print e
-        session.rollback()
-        return False
-    finally:
-        DBUtil.close_session(session)
-
-
-def find_danmaku(danmaku):
-    session = DBUtil.open_session()
-    try:
-        result = session.query(Danmaku).filter(Danmaku.raw_id == danmaku.raw_id).first()
-        return result
     except Exception as e:
         print e
         session.rollback()

@@ -23,7 +23,7 @@ class Danmaku(__BASE_MODEL):
     createdAt = Column(DateTime, nullable=True)
     updatedAt = Column(DateTime, nullable=True)
     # 外键
-    episode_aid = Column(Integer, ForeignKey("episode.av_id"))
+    episode_id = Column(Integer, ForeignKey("episode.episode_id"))
     episode = relationship("Episode", backref=backref("danmakus", uselist=True, cascade="delete, all"))
 
     def __init__(self, attributes, content):

@@ -6,6 +6,8 @@ import time
 import json
 from request import api
 from tasks import bangumi
+from util.batch_singleton import BatchSingleton
+
 
 BASE_URL = "https://bangumi.bilibili.com/web_api/season/index_global?"
 DEFAULT_PARAMETERS = {
@@ -39,11 +41,12 @@ def index_page_spider(page_query_interval=1):
         bangumi_list = result["list"]
         for bangumi_info in bangumi_list:
             bangumi.bangumi_handler(bangumi_info)
-        if page_number == result["pages"]:
+        if page_number >= 30:
             break
         else:
             page_number += 1
             time.sleep(page_query_interval)
+    BatchSingleton.clean_instance()
     return
 
 if __name__ == "__main__":

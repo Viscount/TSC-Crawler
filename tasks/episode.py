@@ -36,7 +36,7 @@ def episode_handler(bangumi, data_dict):
     logger.info("Now collecting episode info :" + episode.episode_id + "-" + episode.index_title + "...")
     episode.cid = get_comment_id(episode.episode_id)
     episode.tags = "|".join(get_tag_list(episode.av_id))
-    episode.bangumi = bangumi
+    episode.season_id = bangumi.season_id
     episode.createdAt = datetime.datetime.now()
     episode.updatedAt = datetime.datetime.now()
     episode_dao.add_episode(episode)
