@@ -23,6 +23,7 @@ class Bangumi(__BASE_MODEL):
     url = Column(Text, nullable=True)
     week = Column(String(30), nullable=True)
     tags = Column(Text, nullable=True)
+    actors = Column(Text, nullable=True)
     createdAt = Column(DateTime, nullable=True)
     updatedAt = Column(DateTime, nullable=True)
 

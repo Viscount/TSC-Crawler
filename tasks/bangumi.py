@@ -31,15 +31,25 @@ def get_style_tags(url):
     return [unicode(tag.string) for tag in tag_list]
 
 
+def get_bangumi_actors(actor_list):
+    actors = []
+    for actor in actor_list:
+        actors.append(actor['actor'])
+    return actors
+
+
 def bangumi_handler(data_dict):
     bangumi = Bangumi(data_dict)
     logger.info("Now collecting bangumi info :" + bangumi.season_id + "-" + bangumi.title + "...")
     bangumi.tags = "|".join(get_style_tags(bangumi.url))
+
     bangumi.createdAt = datetime.datetime.now()
     bangumi.updatedAt = datetime.datetime.now()
-    bangumi_dao.add_bangumi(bangumi)
 
     bangumi_info = json.loads(_format_callback(api.request_api(_construct_bangumi_detail_url(bangumi.season_id))))
+    bangumi.actors = "|".join(get_bangumi_actors(bangumi_info["result"]["actor"]))
+
+    bangumi_dao.add_bangumi(bangumi)
     episodes_list = bangumi_info["result"]["episodes"]
     for episode_item in episodes_list:
         episode.episode_handler(bangumi, episode_item)
