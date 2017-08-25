@@ -19,13 +19,11 @@ def add_bangumi(bangumi):
         DBUtil.close_session(session)
 
 
-def add_bangumis(bangumi_list):
+def find_bangumi_by_id(season_id):
     session = DBUtil.open_session()
     try:
-        for bangumi in bangumi_list:
-            session.merge(bangumi)
-        session.commit()
-        return True
+        result = session.query(Bangumi).filter(Bangumi.season_id == season_id).first()
+        return result
     except Exception as e:
         print e
         session.rollback()

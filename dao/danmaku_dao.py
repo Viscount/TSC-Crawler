@@ -42,6 +42,19 @@ def find_danmaku(danmaku):
     except Exception as e:
         print e
         session.rollback()
-        return False
+        return None
+    finally:
+        DBUtil.close_session(session)
+
+
+def find_danmakus_by_episode(episode_id):
+    session = DBUtil.open_session()
+    try:
+        result = session.query(Danmaku).filter(Danmaku.episode_id == episode_id).all()
+        return result
+    except Exception as e:
+        print e
+        session.rollback()
+        return None
     finally:
         DBUtil.close_session(session)

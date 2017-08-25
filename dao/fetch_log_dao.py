@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from util.dbutil import DBUtil
+from models.fetch_log import FetchLog
 
 
 def add_fetch_log(fetch_log):
@@ -29,5 +30,18 @@ def add_fetch_logs(fetch_log_list):
         print e
         session.rollback()
         return False
+    finally:
+        DBUtil.close_session(session)
+
+
+def find_fetch_logs_by_episode(episode_id):
+    session = DBUtil.open_session()
+    try:
+        result = session.query(FetchLog).filter(FetchLog.episode_id == episode_id).order_by(FetchLog.batch.asc()).all()
+        return result
+    except Exception as e:
+        print e
+        session.rollback()
+        return None
     finally:
         DBUtil.close_session(session)
