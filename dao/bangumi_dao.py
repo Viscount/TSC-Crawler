@@ -27,6 +27,6 @@ def find_bangumi_by_id(season_id):
     except Exception as e:
         print e
         session.rollback()
-        return False
+        return None
     finally:
         DBUtil.close_session(session)

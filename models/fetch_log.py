@@ -4,6 +4,8 @@
 from sqlalchemy import Column, Integer, DateTime, BigInteger, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
+from models.episode import Episode
+from models.danmaku import Danmaku
 from models import BaseModel
 
 __BASE_MODEL = BaseModel.get_base_model()

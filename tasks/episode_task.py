@@ -6,7 +6,7 @@ import json
 import datetime
 from request import webpage, api
 from models.episode import Episode
-from tasks import danmaku
+from tasks import danmaku_task
 from dao import episode_dao
 from bs4 import BeautifulSoup
 
@@ -41,5 +41,5 @@ def episode_handler(bangumi, data_dict):
     episode.updatedAt = datetime.datetime.now()
     episode_dao.add_episode(episode)
 
-    danmaku.danmaku_handler(episode)
+    danmaku_task.danmaku_handler(episode)
     return

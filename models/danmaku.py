@@ -3,6 +3,7 @@
 
 from sqlalchemy import Column, String, Float, Text, Integer, DateTime, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship, backref
+from models.episode import Episode
 
 from models import BaseModel
 

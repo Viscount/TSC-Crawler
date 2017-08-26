@@ -4,6 +4,7 @@
 from sqlalchemy import Column, String, ForeignKey, Integer, DateTime, Text
 from sqlalchemy.orm import relationship, backref
 
+from models.bangumi import Bangumi
 from models import BaseModel
 
 __BASE_MODEL = BaseModel.get_base_model()

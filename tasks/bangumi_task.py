@@ -7,7 +7,7 @@ import time
 import json
 from request import webpage, api
 from models.bangumi import Bangumi
-from tasks import episode
+from tasks import episode_task
 from bs4 import BeautifulSoup
 from dao import bangumi_dao
 
@@ -52,7 +52,7 @@ def bangumi_handler(data_dict):
     bangumi_dao.add_bangumi(bangumi)
     episodes_list = bangumi_info["result"]["episodes"]
     for episode_item in episodes_list:
-        episode.episode_handler(bangumi, episode_item)
+        episode_task.episode_handler(bangumi, episode_item)
         time.sleep(1)
     return
 

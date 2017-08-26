@@ -5,7 +5,7 @@ import logging
 import time
 import json
 from request import api
-from tasks import bangumi
+from tasks import bangumi_task
 from util.batch_singleton import BatchSingleton
 
 
@@ -40,7 +40,7 @@ def index_page_spider(page_query_interval=1):
         result = data_dict["result"]
         bangumi_list = result["list"]
         for bangumi_info in bangumi_list:
-            bangumi.bangumi_handler(bangumi_info)
+            bangumi_task.bangumi_handler(bangumi_info)
         if page_number >= 30:
             break
         else:
