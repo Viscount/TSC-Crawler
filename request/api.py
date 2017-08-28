@@ -11,6 +11,11 @@ logger = logging.getLogger("logger")
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(1))
 def request_api(url):
-    logger.info("Requesting url: " + url)
-    response = urllib2.urlopen(url)
-    return response.read()
+    try:
+        logger.info("Requesting url: " + url)
+        response = urllib2.urlopen(url)
+        logger.info("Response: " + str(response.code))
+        return response.read()
+    except Exception as e:
+        print e
+

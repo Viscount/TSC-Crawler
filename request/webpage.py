@@ -23,6 +23,7 @@ def request_webpage(url):
     req = urllib2.Request(url, headers=HEADER)
     response = urllib2.urlopen(req)
     content = response.read()
+    logger.info("Response: " + str(response.code))
     response.close()
     resp_info = response.info()
     try:
@@ -33,5 +34,6 @@ def request_webpage(url):
         elif resp_info["Content-Encoding"] == "zlib":
             content = zlib.decompress(content, zlib.MAX_WBITS)
     except zlib.error as exception:
+        print exception
         logger.debug(exception)
     return content
