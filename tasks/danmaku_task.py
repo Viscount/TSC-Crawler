@@ -34,7 +34,7 @@ def danmaku_handler(episode):
     exist_danmakus = danmaku_dao.find_danmakus_by_episode(episode.episode_id)
     exist_raw_ids = set()
     for danmaku in exist_danmakus:
-        exist_raw_ids.append(danmaku.raw_id)
+        exist_raw_ids.add(danmaku.raw_id)
     fetch_logs = []
     ready_danmakus = []
     for danmaku in raw_danmaku_list:
