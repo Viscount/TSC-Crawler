@@ -3,3 +3,4 @@ mysql-connector-python-rf
 tenacity
 beautifulsoup4
 lxml
+APScheduler
