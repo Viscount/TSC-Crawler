@@ -13,9 +13,10 @@ logger = logging.getLogger("logger")
 def request_api(url):
     try:
         logger.info("Requesting url: " + url)
-        response = urllib2.urlopen(url)
+        response = urllib2.urlopen(url, timeout = 2)
         logger.info("Response: " + str(response.code))
         return response.read()
     except Exception as e:
         print e
+        return None
 

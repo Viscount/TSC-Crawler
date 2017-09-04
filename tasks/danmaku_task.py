@@ -17,6 +17,8 @@ logger = logging.getLogger("logger")
 def get_danmaku_list(comment_id):
     HEADER_URL = "http://comment.bilibili.com/"
     content = webpage.request_webpage(HEADER_URL + str(comment_id) + ".xml")
+    if content is None:
+        return None
     parsed_content = BeautifulSoup(content, "xml")
     raw_damakus = parsed_content.find_all("d")
     danmakus = []
@@ -30,6 +32,8 @@ def get_danmaku_list(comment_id):
 def danmaku_handler(episode):
     logger.info("Now collecting danmaku info :" + episode.cid + "...")
     raw_danmaku_list = get_danmaku_list(episode.cid)
+    if raw_danmaku_list is None:
+        return
     current_batch = BatchSingleton.get_instance()
     exist_danmakus = danmaku_dao.find_danmakus_by_episode(episode.episode_id)
     exist_raw_ids = set()

@@ -19,21 +19,28 @@ HEADER = {
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(1))
 def request_webpage(url):
-    logger.info("Requesting url: " + url)
-    req = urllib2.Request(url, headers=HEADER)
-    response = urllib2.urlopen(req)
-    content = response.read()
-    logger.info("Response: " + str(response.code))
-    response.close()
-    resp_info = response.info()
     try:
+        logger.info("Requesting url: " + url)
+        req = urllib2.Request(url, headers=HEADER)
+        response = urllib2.urlopen(req, timeout=2)
+        content = response.read()
+        logger.info("Response: " + str(response.code))
+        response.close()
+        resp_info = response.info()
+
         if resp_info["Content-Encoding"] == "deflate":
             content = zlib.decompress(content, -zlib.MAX_WBITS)
         elif resp_info["Content-Encoding"] == "gzip":
             content = zlib.decompress(content, zlib.MAX_WBITS | 16)
         elif resp_info["Content-Encoding"] == "zlib":
             content = zlib.decompress(content, zlib.MAX_WBITS)
+
+        return content
     except zlib.error as exception:
         print exception
         logger.debug(exception)
-    return content
+        return None
+    except Exception as e:
+        print e
+        return None
+

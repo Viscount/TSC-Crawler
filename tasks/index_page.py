@@ -36,7 +36,10 @@ def index_page_spider(page_query_interval=1):
     page_number = 1
     while True:
         logger.info("Collecting in index page " + str(page_number) + "...")
-        data_dict = json.loads(api.request_api(_construct_request_url(page=page_number)))
+        response_content = api.request_api(_construct_request_url(page=page_number))
+        if response_content is None:
+            continue
+        data_dict = json.loads(response_content)
         result = data_dict["result"]
         bangumi_list = result["list"]
         for bangumi_info in bangumi_list:

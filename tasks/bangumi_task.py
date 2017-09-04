@@ -26,7 +26,10 @@ def _format_callback(callback_result):
 
 
 def get_style_tags(url):
-    web_page_content = BeautifulSoup(webpage.request_webpage(url), "html.parser")
+    html_content = webpage.request_webpage(url)
+    if html_content is None:
+        return []
+    web_page_content = BeautifulSoup(html_content, "html.parser")
     tag_list = web_page_content.find_all(class_="info-style-item")
     return [unicode(tag.string) for tag in tag_list]
 
