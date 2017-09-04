@@ -4,7 +4,10 @@
 import urllib2
 import logging
 import zlib
-from tenacity import retry, stop_after_attempt, wait_fixed
+from urllib2 import URLError
+from socket import timeout
+from ssl import SSLError
+from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type
 
 logger = logging.getLogger("logger")
 
@@ -17,12 +20,13 @@ HEADER = {
         }
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(1))
+@retry(retry=retry_if_exception_type(URLError) | retry_if_exception_type(timeout) | retry_if_exception_type(SSLError),
+       stop=stop_after_attempt(3), wait=wait_fixed(1))
 def request_webpage(url):
     try:
         logger.info("Requesting url: " + url)
         req = urllib2.Request(url, headers=HEADER)
-        response = urllib2.urlopen(req, timeout=2)
+        response = urllib2.urlopen(req, timeout=10)
         content = response.read()
         logger.info("Response: " + str(response.code))
         response.close()
@@ -37,10 +41,8 @@ def request_webpage(url):
 
         return content
     except zlib.error as exception:
-        print exception
+        print type(exception), exception
         logger.debug(exception)
-        return None
     except Exception as e:
-        print e
-        return None
+        print type(e), e
 
